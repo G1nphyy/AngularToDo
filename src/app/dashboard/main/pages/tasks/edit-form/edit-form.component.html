@@ -1,0 +1,55 @@
+<div class="overlay" (click)="overlayCancelEdit($event)">
+  <form class="edit-form" (ngSubmit)="submitEdit()">
+    <h2>Edit task</h2>
+    <mat-form-field appearance="outline">
+      <mat-label>Edit task title</mat-label>
+      <input
+        matInput
+        type="text"
+        name="editedTaskTitle"
+        [ngModel]="draftTitle()"
+        (ngModelChange)="updateDraftTitle($event)"
+        placeholder="Update task title"
+      />
+    </mat-form-field>
+    <div class="date-time-container">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Edit task date</mat-label>
+        <input
+          matInput
+          name="editedTaskDate"
+          [matDatepicker]="picker"
+          [ngModel]="dateForDatepicker()"
+          (ngModelChange)="updateDraftDate($event)"
+        >
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Edit time</mat-label>
+        <input
+          matInput
+          type="time"
+          name="editedTaskTime"
+          [ngModel]="timeForInput()"
+          (ngModelChange)="updateDraftTime($event)"
+        />
+        <mat-icon matIconSuffix>access_time</mat-icon>
+      </mat-form-field>
+
+    </div>
+
+    <div class="edit-actions">
+      <button mat-flat-button color="primary" type="submit">
+        <mat-icon>save</mat-icon>
+        Save
+      </button>
+
+      <button mat-stroked-button type="button" (click)="cancelEdit()">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

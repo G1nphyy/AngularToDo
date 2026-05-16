@@ -1,0 +1,60 @@
+<div class="login-wrapper">
+  <div class="login-form">
+    <mat-card>
+      <mat-card-title>
+        <mat-icon>lock</mat-icon>
+        <span>Login</span>
+      </mat-card-title>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" [errorStateMatcher]="emailMatcher"
+                   placeholder="john.doe@example.com">
+            @if (loginForm.get('email')?.hasError('required')) {
+              <mat-error>
+                <mat-icon>error</mat-icon>
+                <span>Email is <strong>required</strong></span>
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hidePassword() ? 'password' : 'text'" [errorStateMatcher]="passwordMatcher"
+                   formControlName="password"/>
+
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="togglePassword($event)"
+              [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+              [attr.aria-pressed]="hidePassword()"
+            >
+              <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+
+            @if (loginForm.get('password')?.errors) {
+              <mat-error>
+                <mat-icon>error</mat-icon>
+                <span class="error-text">
+                  @if (loginForm.get('password')?.errors) {
+                    Password is <strong>required</strong>
+                  }
+                </span>
+              </mat-error>
+            }
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+            Login
+          </button>
+
+        </form>
+        <a routerLink="../register">Don't have an account? Register!</a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

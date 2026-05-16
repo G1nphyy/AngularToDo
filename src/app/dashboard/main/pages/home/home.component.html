@@ -1,0 +1,132 @@
+<section class="home-page">
+  <section class="hero">
+    <div class="hero-content">
+      <mat-chip-set aria-label="Page label">
+        <mat-chip>
+          <mat-icon>bolt</mat-icon>
+          Welcome back
+        </mat-chip>
+      </mat-chip-set>
+
+      <h1>Plan your day with TodosApp</h1>
+
+      <p class="hero-description">
+        Manage tasks, track progress, and stay focused with a simple dashboard built for everyday productivity.
+      </p>
+
+      <div class="hero-actions">
+        <a mat-flat-button color="primary" routerLink="../tasks">
+          <mat-icon>add_task</mat-icon>
+          Start planning
+        </a>
+
+        <a mat-stroked-button href="#features">
+          <mat-icon>explore</mat-icon>
+          See features
+        </a>
+      </div>
+    </div>
+
+    <mat-card class="hero-card">
+      <mat-card-content>
+        <div class="card-header">
+          <div>
+            <span>Today's focus</span>
+            <strong>{{ todayProgress()}}%</strong>
+          </div>
+
+          <mat-icon>trending_up</mat-icon>
+        </div>
+
+        <mat-progress-bar mode="determinate" value="{{todayProgress()}}"></mat-progress-bar>
+
+        <mat-divider></mat-divider>
+
+        <ul class="task-preview">
+          @for (task of previewTasks(); track task.title) {
+            <li>
+              <mat-icon [class.done]="task.status == 'completed'" [class.pending]="task.status == 'pending'">
+                {{ task.status == 'completed' ? 'check_circle' : task.status == 'pending' ? 'schedule' : 'radio_button_unchecked' }}
+              </mat-icon>
+
+              <span>{{ task.title }}</span>
+            </li>
+          }
+          @if (todayTasksCount() > 3){
+            <li class="more-tasks">
+              <a routerLink="../tasks">+{{ todayTasksCount() - 3 }} more</a>
+            </li>
+          }
+          @if (todayTasksCount() == 0){
+            <li class="no-tasks">
+              <span>No tasks for today</span>
+              <a routerLink="../tasks">Create one</a>
+            </li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section class="stats-grid" aria-label="Todo statistics">
+    @for (stat of stats(); track stat.label) {
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <mat-icon>{{ stat.icon }}</mat-icon>
+          <strong>{{ stat.value }}</strong>
+          <span>{{ stat.label }}</span>
+        </mat-card-content>
+      </mat-card>
+    }
+  </section>
+
+  <section id="features" class="features-section">
+    <div class="section-heading">
+      <mat-chip-set aria-label="Features label">
+        <mat-chip>
+          <mat-icon>star</mat-icon>
+          Features
+        </mat-chip>
+      </mat-chip-set>
+
+      <h2>Everything you need to manage your todos</h2>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <mat-card class="feature-card">
+          <mat-card-content>
+            <div class="feature-icon">
+              <mat-icon>{{ feature.icon }}</mat-icon>
+            </div>
+
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <section id="quick-start" class="quick-start">
+    <div>
+      <mat-chip-set aria-label="Quick start label">
+        <mat-chip>
+          <mat-icon>rocket_launch</mat-icon>
+          Quick start
+        </mat-chip>
+      </mat-chip-set>
+
+      <h2>Create your first task list</h2>
+      <p>
+        TodosApp is designed to be simple and intuitive.
+      </p>
+
+    </div>
+
+    <button mat-flat-button type="button" routerLink="../tasks" >
+      <mat-icon>add_task</mat-icon>
+      Create your first list
+    </button>
+  </section>
+</section>

@@ -1,0 +1,172 @@
+<section class="tasks-page">
+  <section class="tasks-hero">
+    <div>
+      <mat-chip-set aria-label="Tasks page label">
+        <mat-chip>
+          <mat-icon>checklist</mat-icon>
+          Tasks
+        </mat-chip>
+      </mat-chip-set>
+
+      <h1>Your tasks</h1>
+
+      <p>
+        Create, track and complete your todos in one clean workspace.
+      </p>
+    </div>
+
+    <mat-card class="summary-card">
+      <mat-card-content>
+        <div class="summary-header">
+          <span class="summary-eyebrow">Task snapshot</span>
+          <p>Quick overview of your current task flow.</p>
+        </div>
+
+        <mat-grid-list cols="2" rowHeight="124px" gutterSize="12px">
+          <mat-grid-tile class="summary-tile">
+            <div class="stat-box">
+              <span>Total</span>
+              <strong>{{ totalTasks() }}</strong>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile class="summary-tile">
+            <div class="stat-box">
+              <span>Active</span>
+              <strong>{{ activeTasks() }}</strong>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile class="summary-tile">
+            <div class="stat-box">
+              <span>Completed</span>
+              <strong>{{ completedTasks() }}</strong>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile class="summary-tile pending-tile">
+            <div class="stat-box stat-box-accent">
+              <span>Pending</span>
+              <strong>{{ pendingTasks() }}</strong>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <mat-card class="tasks-panel">
+    <mat-card-content>
+      <form class="task-form" (ngSubmit)="addTask()">
+        <mat-form-field appearance="outline">
+          <mat-label>New task</mat-label>
+          <input
+            matInput
+            type="text"
+            name="newTaskTitle"
+            [ngModel]="newTaskTitle()"
+            (ngModelChange)="updateNewTaskTitle($event)"
+            placeholder="Example: Learn Angular signals"
+          />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit">
+          <mat-icon>add</mat-icon>
+          Add task
+        </button>
+      </form>
+
+      <div class="toolbar">
+        <mat-button-toggle-group
+          [value]="activeFilter()"
+          aria-label="Task filter"
+          (valueChange)="setFilter($event)"
+        >
+          <mat-button-toggle value="all">All</mat-button-toggle>
+          <mat-button-toggle value="active">Active</mat-button-toggle>
+          <mat-button-toggle value="completed">Completed</mat-button-toggle>
+          <mat-button-toggle value="pending">Pending</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="completedTasks() === 0"
+          (click)="clearCompleted()"
+        >
+          <mat-icon>delete_sweep</mat-icon>
+          Clear completed
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      @if (filteredTasks().length > 0) {
+        <ul class="task-list">
+          @for (task of filteredTasks(); track task.id) {
+            <li class="task-item" [class.completed]="task.status == 'completed'">
+              <button mat-icon-button type="button" class="status-indicator" (click)="toggleTask(task.id)">
+                @if (task.status === 'completed') {
+                  <mat-icon class="icon-done">check_circle</mat-icon>
+                } @else if (task.status === 'pending') {
+                  <mat-icon class="icon-pending">schedule</mat-icon>
+                } @else {
+                  <mat-icon class="icon-active">radio_button_unchecked</mat-icon>
+                }
+              </button>
+
+              <div class="task-content">
+                <span>{{ task.title }}</span>
+                <small>{{ task.date | date: 'short' }}</small>
+              </div>
+
+              <div class="task-actions">
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Edit task"
+                  [attr.aria-label]="'Edit task ' + task.title"
+                  (click)="editTask(task.id)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Delete task"
+                  [attr.aria-label]="'Delete task ' + task.title"
+                  (click)="deleteTask(task.id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+            </li>
+            @if (editingTaskId() === task.id) {
+              <app-edit-form
+                [taskToEdit]="task"
+                (save)="saveTaskEdit($event)"
+                (cancel)="cancelTaskEdit()"
+              ></app-edit-form>
+            }
+          }
+        </ul>
+        <mat-paginator
+          [length]="filteredTotal()"
+          [pageSize]="pageSize()"
+          [pageIndex]="pageIndex()"
+          [pageSizeOptions]="[5, 10, 25]"
+          (page)="handlePageEvent($event)"
+          aria-label="Select page"
+        >
+        </mat-paginator>
+      } @else {
+        <section class="empty-state">
+          <mat-icon>inbox</mat-icon>
+          <h2>No tasks here</h2>
+          <p>
+            Add a new task or change the selected filter.
+          </p>
+        </section>
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

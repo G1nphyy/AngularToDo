@@ -1,0 +1,102 @@
+.login-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .login-form {
+    mat-card {
+      width: var(--auth-card-width);
+      height: auto;
+      padding: var(--space-14);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+
+      mat-card-title {
+        font-size: var(--font-3xl);
+        font-weight: var(--font-semibold);
+        letter-spacing: -0.5px;
+        margin-bottom: var(--space-14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-5);
+
+        mat-icon {
+          font-size: var(--font-4xl);
+          width: 28px;
+          height: 28px;
+          color: var(--color-link);
+        }
+      }
+
+      mat-card-content {
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-9);
+        }
+
+        a {
+          text-decoration: none;
+          color: var(--color-link);
+          width: 100%;
+          text-align: center;
+          display: block;
+          margin-top: var(--space-4);
+          font-size: var(--font-sm);
+          font-weight: var(--font-medium);
+          cursor: pointer;
+        }
+
+        mat-form-field {
+          width: 100%;
+
+          mat-error {
+            font-size: var(--font-xs);
+            font-weight: var(--font-normal);
+            line-height: 1.4;
+            white-space: normal;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            margin-top: var(--space-2);
+
+            mat-icon {
+              font-size: var(--font-md);
+              width: 16px;
+              height: 16px;
+              flex-shrink: 0;
+              margin-top: 1px;
+            }
+
+            .error-text {
+              display: inline;
+            }
+          }
+
+          mat-label {
+            font-size: var(--font-sm);
+            font-weight: var(--font-medium);
+          }
+        }
+
+        button[type=submit] {
+          width: 100%;
+          padding: var(--space-11) var(--space-7);
+          font-size: var(--font-md);
+          font-weight: var(--font-medium);
+          border-radius: var(--radius-sm);
+          margin-top: var(--space-5);
+          transition: all var(--transition-fast);
+
+          &:disabled {
+            cursor: not-allowed;
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+  }
+}
